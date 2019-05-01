@@ -1,0 +1,45 @@
+version: '2.4'
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certs:/etc/nginx/certs
+  web:
+    build: 
+      context: ./web
+    volumes: 
+      - ./web/src:/home/node/app/src:rw
+    environment:
+      - VIRTUAL_HOST=www.local.knowyourself.com
+      - API_URL=https://api.local.knowyourself.com
+
+  api:
+    depends_on:
+      - user_db
+      - redis
+    build:
+      context: ./api
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    volumes: 
+      - ./api/src:/home/node/app/src:rw
+    environment:
+      - VIRTUAL_HOST=api.local.knowyourself.com
+      - VIRTUAL_PORT=3000
+      - USERDB_URL=mongodb://mongodbuser1:localmongopassword@user_db:8081
+      - REDIS_URL=redis://:localredispassword@redis:6379
+  
+  user_db:
+    image: mongo:3.6.11
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongodbuser1
+      - MONGO_INITDB_ROOT_PASSWORD=localmongopassword
+  redis:
+    image: redis:5
+    command: redis-server --requirepass localredispassword

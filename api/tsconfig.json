@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "outDir": "./dist",
+      "rootDir": "./src",
+      "sourceMap": true,
+      "inlineSources": true,
+      "allowJs": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "esModuleInterop": true,
+      "module": "commonjs",
+      "target": "es2018",
+      "moduleResolution": "node",
+      "incremental": true,
+      "tsBuildInfoFile": ".tsBuildInfo"
+    },
+    "include": ["./src/**/*.js", "./src/**/*.json", "./src/**/*.ts"]
+  }
