@@ -1,6 +1,6 @@
 version: '2.4'
 services:
-  nginx-proxy:
+  proxy:
     image: jwilder/nginx-proxy
     ports:
       - "80:80"
